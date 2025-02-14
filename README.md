@@ -35,7 +35,7 @@ tw3factor._plot_equity_curve()
 
 
 
-## Stock pool, rebalancing dates improvement
+## improving stock pool, rebalancing dates
 
 We made two key adjustments to improve the strategy:
 
@@ -79,7 +79,7 @@ adjusted_tw3factor._plot_equity_curve()
 
 <img src="images/improved_strategy.png" width="800"/>
 
-## converge drawdown with MAE/ MFE analysis
+## converging drawdown with MAE/ MFE analysis
 as can be seen from the MFE distribution, the maximum loss for loss trades at Q3 is 15.16%, which means that the loss exceed 15.16% is mostly cannot recover.
 
 ```python
