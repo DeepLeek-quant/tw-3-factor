@@ -1,6 +1,6 @@
 # TW3FactorModel
 
-A quantitative trading strategy based on three factors from 台股研究室 (Taiwan Stock Research Lab), with progressive improvements.
+A quantitative trading strategy based on the three factors from 台股研究室 by Prof. 葉怡成, with progressive improvements.
 
 ## Base Strategy
 
@@ -9,7 +9,7 @@ The base strategy uses three fundamental factors:
 2. 3-Month Momentum
 3. Price-to-Book Ratio (inverted)
 
-These factors, originally proposed by 葉怡成 from 台股研究室, are combined to create a composite score for stock selection, rebalancing quarterly.
+These factors, originally proposed by Prof. 葉怡成 from 台股研究室, are combined to create a composite score for stock selection, rebalancing quarterly.
 ```python
 roe = bts.get_factor('roe')
 mtm = bts.get_factor('mtm_3m')
