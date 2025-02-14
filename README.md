@@ -10,7 +10,6 @@ The base strategy uses three fundamental factors:
 3. Price-to-Book Ratio (inverted)
 
 These factors, originally proposed by 葉怡成 from 台股研究室, are combined to create a composite score for stock selection, rebalancing quarterly.
-
 ```python
 roe = bts.get_factor('roe')
 mtm = bts.get_factor('mtm_3m')
@@ -19,10 +18,7 @@ factor = bts.get_factor(roe+mtm+pbr)
 
 tw3factor = bts.backtesting(factor>=0.99, rebalance='Q')
 tw3factor.summary
-tw3factor._plot_equity_curve()
 ```
-
-### Performance
 - Annual Return: 24.07%
 - Total Return: 7525.18%
 - Max Drawdown: -72.55%
@@ -31,7 +27,13 @@ tw3factor._plot_equity_curve()
 - Calmar Ratio: 0.33
 - Beta: 0.59
 
-<img src="images/org_strategy.png" width="600"/>
+```python
+tw3factor._plot_equity_curve()
+```
+
+<img src="images/org_strategy.png" width="800"/>
+
+
 
 ## Stock pool, rebalancing dates improvement
 
@@ -61,10 +63,8 @@ factor = bts.get_factor(roe+mtm+pbr)
 
 adjusted_tw3factor = bts.backtesting(factor>=0.99, rebalance='QR', universe=universe)
 adjusted_tw3factor.summary
-adjusted_tw3factor._plot_equity_curve()
 ```
 
-### Performance
 - Annual return: 33.25%
 - Total return: 33221.64%
 - Max drawdown: -61.43%
@@ -73,39 +73,49 @@ adjusted_tw3factor._plot_equity_curve()
 - Calmar ratio: 0.54
 - Beta: 0.6
 
-<img src="images/improved_strategy.png" width="600"/>
+```python
+adjusted_tw3factor._plot_equity_curve()
+```
+
+<img src="images/improved_strategy.png" width="800"/>
 
 ## converge drawdown with MAE/ MFE analysis
-as can be seen from the MFE distribution, the maximum loss for loss trades at Q3 is 15.16%, which means that the loss exceed 13% is mostly cannot recover.
+as can be seen from the MFE distribution, the maximum loss for loss trades at Q3 is 15.16%, which means that the loss exceed 15.16% is mostly cannot recover.
 
 ```python
 adjusted_tw3factor._plot_maemfe()
 ```
 
-<img src="images/improved_maemfe.png" width="600"/>
+<img src="images/improved_maemfe.png" width="800"/>
 
 so we can add a stop loss at 15% to improve the strategy
+
 ```python
 stop_lossed_tw3factor = bts.backtesting(factor>=0.99, rebalance='QR', stop_loss=0.15, stop_at='intraday')
+stop_lossed_tw3factor._plot_maemfe()
+```
+
+<img src="images/stop_lossed_maemfe.png" width="800"/>
+
+As can be seen from the GMFE/ MAE, the stop loss is effective, the maximum loss is reduced to ~20%, which is originally ~40%.
+
+```python
 stop_lossed_tw3factor.summary
 ```
 
-<img src="images/stop_lossed_maemfe.png" width="600"/>
+- Annual return: 27.24%
+- Total return: 12994.90%
+- Max drawdown: -46.91%
+- Annual volatility: 24.30%
+- Sharpe ratio: 1.1
+- Calmar ratio: 0.58
+- Beta: 0.37
 
-the MDD is reduced to 47%, which is originally 61%, with the sacrifice of annual return from 33.25% to 27.24%.
 
+the MDD is reduced to 47%, which is originally 61%, with the slight sacrifice of annual return from 33.25% to 27.24%.
 
-### Future Improvements (TODO)
-1. Position Sizing: Implement dynamic position sizing based on volatility
-2. Factor Weighting: Optimize factor weights using machine learning
-3. Sector Constraints: Add sector diversification limits
-4. Transaction Cost Analysis: Include realistic trading costs and slippage
-5. Alternative Data: Incorporate additional factors like sentiment analysis
+```python
+stop_lossed_tw3factor._plot_equity_curve()
+```
 
-## Requirements
-- quantdev.backtest
-- Python 3.x
-- Additional dependencies listed in requirements.txt (TODO)
-
-## Usage
-See main.ipynb for implementation details and backtesting results.
+<img src="images/stop_lossed_strategy.png" width="800"/>
