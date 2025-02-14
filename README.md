@@ -1,15 +1,18 @@
-# TW3FactorModel
+# 台灣三因子模型
 
-A quantitative trading strategy based on the three factors from 台股研究室 by Prof. 葉怡成, with progressive improvements.
+[English](README_EN.md)
 
-## Base Strategy
+基於台股研究室葉怡成教授提出的三因子量化交易策略，並進行漸進式改良。
 
-The base strategy uses three fundamental factors:
-1. ROE (Return on Equity)
-2. 3-Month Momentum
-3. Price-to-Book Ratio (inverted)
+## 基礎策略
 
-These factors, originally proposed by Prof. 葉怡成 from 台股研究室, are combined to create a composite score for stock selection, rebalancing quarterly.
+基礎策略使用三個基本面因子：
+1. ROE（股東權益報酬率）
+2. 3個月動能
+3. 股價淨值比（反向）
+
+這些因子最初由台股研究室的葉怡成教授提出，將其結合以創建綜合評分用於選股，每季度再平衡。
+
 ```python
 roe = bts.get_factor('roe')
 mtm = bts.get_factor('mtm_3m')
@@ -35,22 +38,21 @@ tw3factor._plot_equity_curve()
 
 
 
-## Improving stock pool, rebalancing dates
+## 改進股票池和再平衡日期
 
-We made two key adjustments to improve the strategy:
+我們進行了兩個關鍵調整以改進策略：
 
-1. Universe Selection:
-   - Added profitability filter (positive net income)
-   - Added technical filter (price above 60-day moving average)
+1. 選股範圍：
+   - 增加獲利能力篩選（正淨利）
+   - 增加技術面篩選（價格高於60日移動平均線）
    
-   These filters help focus on financially healthier companies with positive price momentum.
+   這些篩選有助於聚焦於財務更健康且具有正向價格動能的公司。
 
-2. Rebalance Timing:
-   - Changed from calendar quarters ('Q') to quarterly financial report release dates ('QR')
-   - This ensures we trade on actual financial data after it becomes publicly available
-   - Helps capture the market reaction to new fundamental information
+2. 再平衡時機：
+   - 從季度（'Q'）改為季度財報發布日期（'QR'）
+   - 確保我們使用最新的財務數據進行交易，而不是過時的資訊
 
-The results show improved performance with higher returns (33.25% vs 22.79% annually) while maintaining similar risk metrics. However, the large maximum drawdown remains a concern that will be addressed in the next version.
+結果顯示在保持類似風險指標的同時，績效有所提升（年化報酬率從22.79%提升至33.25%）。然而，較大的最大回撤仍然是一個需要在下一版本中解決的問題。
 
 ```python
 universe = (bts.get_data('稅後淨利')>=0) &\
@@ -79,8 +81,8 @@ adjusted_tw3factor._plot_equity_curve()
 
 <img src="images/improved_strategy.png" width="800"/>
 
-## Converging drawdown with MAE/ MFE analysis
-as can be seen from the MFE distribution, the maximum loss for loss trades at Q3 is 15.16%, which means that the loss exceed 15.16% is mostly un-recoverable.
+## 透過MAE/MFE分析收斂回撤
+從MFE分布可以看出，虧損交易在75%百分位(Q3)的最大損失為15.16%，這意味著超過15.16%的損失大多是無法回復的。
 
 ```python
 adjusted_tw3factor._plot_maemfe()
@@ -88,7 +90,7 @@ adjusted_tw3factor._plot_maemfe()
 
 <img src="images/improved_maemfe.png" width="800"/>
 
-so we can add a stop loss at 15% to improve the strategy
+因此，我們可以在15%虧損時增加停損來改善策略。
 
 ```python
 stop_lossed_tw3factor = bts.backtesting(factor>=0.99, rebalance='QR', stop_loss=0.15, stop_at='intraday')
@@ -97,7 +99,7 @@ stop_lossed_tw3factor._plot_maemfe()
 
 <img src="images/stop_lossed_maemfe.png" width="800"/>
 
-As can be seen from the GMFE/ MAE, the stop loss is effective, the maximum loss is reduced to ~20%, which is originally ~40%.
+從GMFE/MAE可以看出，停損是有效的，最大損失從原來的40%減少到20%左右。
 
 ```python
 stop_lossed_tw3factor.summary
@@ -111,8 +113,7 @@ stop_lossed_tw3factor.summary
 - Calmar ratio: 0.58
 - Beta: 0.37
 
-
-the MDD is reduced to 47%, which is originally 61%, with the slight sacrifice of annual return from 33.25% to 27.24%.
+最大回撤從原本的61%降低至47%，年化報酬率則從33.25%略微下降至27.24%。
 
 ```python
 stop_lossed_tw3factor._plot_equity_curve()
