@@ -61,7 +61,7 @@ mtm = bts.get_factor('mtm_3m', universe=universe)
 pbr = bts.get_factor('股價淨值比', asc=False, universe=universe)
 factor = bts.get_factor(roe+mtm+pbr)
 
-adjusted_tw3factor = bts.backtesting(factor>=0.99, rebalance='QR', universe=universe)
+adjusted_tw3factor = bts.backtesting(factor>=0.99, rebalance='QR')
 adjusted_tw3factor.summary
 ```
 
