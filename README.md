@@ -21,13 +21,13 @@ factor = bts.get_factor(roe+mtm+pbr)
 tw3factor = bts.backtesting(factor>=0.99, rebalance='Q')
 tw3factor.summary
 ```
-- Annual Return: 24.07%
-- Total Return: 7525.18%
-- Max Drawdown: -72.55%
-- Annual Volatility: 28.59%
-- Sharpe Ratio: 0.84
-- Calmar Ratio: 0.33
-- Beta: 0.59
+- Annual Return: 22.79%
+- Total Return: 6086.99%
+- Max Drawdown: -58.24%
+- Annual Volatility: 19.66%
+- Sharpe Ratio: 1.2
+- Calmar Ratio: 0.39
+- Beta: 0.57
 
 ```python
 tw3factor._plot_equity_curve()
@@ -125,12 +125,12 @@ stop_lossed_tw3factor._plot_equity_curve()
 | | 原始策略 | 改良策略 | 停損策略 |
 |----------|---------------|--------------|--------------|
 | Annual return | 22.79% | 33.25% | 27.24% |
-| Total return | 7525.18% | 33221.64% | 12994.90% |
-| Max drawdown | -72.55% | -61.43% | -46.91% |
-| Annual volatility | 28.59% | 29.03% | 24.30% |
-| Sharpe ratio | 0.84 | 1.10 | 1.10 |
-| Calmar ratio | 0.33 | 0.54 | 0.58 |
-| Beta | 0.59 | 0.60 | 0.37 |
+| Total return | 6086.99% | 33221.64% | 12994.90% |
+| Max drawdown | -58.24% | -61.43% | -46.91% |
+| Annual volatility | 19.66% | 29.03% | 24.30% |
+| Sharpe ratio | 1.20 | 1.10 | 1.10 |
+| Calmar ratio | 0.39 | 0.54 | 0.58 |
+| Beta | 0.57 | 0.60 | 0.37 |
 
 本研究透過三個階段優化台股動能策略:
 1. 原始策略使用簡單的價值/獲利/動能三因子，雖然有不錯的報酬但波動較大
