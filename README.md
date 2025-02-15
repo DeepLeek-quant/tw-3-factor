@@ -12,6 +12,7 @@
 這些因子最初由葉怡成教授在台股研究室提出，將其結合以創建綜合評分用於選股，每季度再平衡。
 
 ```python
+import quantdev.backtest as bts
 roe = bts.get_factor('roe')
 mtm = bts.get_factor('mtm_3m')
 pbr = bts.get_factor('股價淨值比', asc=False)
