@@ -33,7 +33,7 @@ tw3factor.summary
 tw3factor._plot_equity_curve()
 ```
 
-<img src="images/org_strategy.png" width="800"/>
+<img src="figure/org_strategy.png" width="800"/>
 
 
 
@@ -78,7 +78,7 @@ adjusted_tw3factor.summary
 adjusted_tw3factor._plot_equity_curve()
 ```
 
-<img src="images/improved_strategy.png" width="800"/>
+<img src="figure/improved_strategy.png" width="800"/>
 
 ## 透過MAE/MFE分析收斂回撤
 從MFE分布可以看出，虧損交易在75%百分位(Q3)的最大損失為15.16%，這意味著超過15.16%的損失大多是無法回復的。
@@ -87,7 +87,7 @@ adjusted_tw3factor._plot_equity_curve()
 adjusted_tw3factor._plot_maemfe()
 ```
 
-<img src="images/improved_maemfe.png" width="800"/>
+<img src="figure/improved_maemfe.png" width="800"/>
 
 因此，我們可以在15%虧損時增加停損來改善策略。
 
@@ -96,7 +96,7 @@ stop_lossed_tw3factor = bts.backtesting(factor>=0.99, rebalance='QR', stop_loss=
 stop_lossed_tw3factor._plot_maemfe()
 ```
 
-<img src="images/stop_lossed_maemfe.png" width="800"/>
+<img src="figure/stop_lossed_maemfe.png" width="800"/>
 
 從GMFE/MAE可以看出，停損是有效的，最大損失從原來的40%減少到20%左右。
 
@@ -118,7 +118,7 @@ stop_lossed_tw3factor.summary
 stop_lossed_tw3factor._plot_equity_curve()
 ```
 
-<img src="images/stop_lossed_strategy.png" width="800"/>
+<img src="figure/stop_lossed_strategy.png" width="800"/>
 
 
 ## 結論
