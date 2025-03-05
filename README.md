@@ -13,12 +13,12 @@
 
 ```python
 import quantdev.backtest as bts
-roe = bts.get_factor('roe')
-mtm = bts.get_factor('mtm_3m')
-pbr = bts.get_factor('股價淨值比', asc=False)
-factor = bts.get_factor(roe+mtm+pbr)
+roe = get_factor('roe')
+mtm = get_factor('mtm_3m')
+pbr = get_factor('股價淨值比', asc=False)
+factor = get_factor(roe+mtm+pbr)
 
-tw3factor = bts.backtesting(factor>=0.99, rebalance='Q')
+tw3factor = backtesting(factor>=0.99, rebalance='Q')
 tw3factor.summary
 ```
 - Annual Return: 22.79%
@@ -54,15 +54,15 @@ tw3factor._plot_equity_curve()
 結果顯示在保持類似風險指標的同時，績效有所提升（年化報酬率從22.79%提升至33.25%）。然而，較大的最大回撤仍然是一個需要在下一版本中解決的問題。
 
 ```python
-universe = (bts.get_data('稅後淨利')>=0) &\
-    (bts.get_data('收盤價')>=bts.get_data('收盤價').rolling(60).mean())
+universe = (get_data('稅後淨利')>=0) &\
+    (get_data('收盤價')>=get_data('收盤價').rolling(60).mean())
 
-roe = bts.get_factor('roe', universe=universe)
-mtm = bts.get_factor('mtm_3m', universe=universe)
-pbr = bts.get_factor('股價淨值比', asc=False, universe=universe)
-factor = bts.get_factor(roe+mtm+pbr)
+roe = get_factor('roe', universe=universe)
+mtm = get_factor('mtm_3m', universe=universe)
+pbr = get_factor('股價淨值比', asc=False, universe=universe)
+factor = get_factor(roe+mtm+pbr)
 
-adjusted_tw3factor = bts.backtesting(factor>=0.99, rebalance='QR')
+adjusted_tw3factor = backtesting(factor>=0.99, rebalance='QR')
 adjusted_tw3factor.summary
 ```
 
@@ -92,7 +92,7 @@ adjusted_tw3factor._plot_maemfe()
 因此，我們可以在15%虧損時增加停損來改善策略。
 
 ```python
-stop_lossed_tw3factor = bts.backtesting(factor>=0.99, rebalance='QR', stop_loss=0.15, stop_at='intraday')
+stop_lossed_tw3factor = backtesting(factor>=0.99, rebalance='QR', stop_loss=0.15, stop_at='intraday')
 stop_lossed_tw3factor._plot_maemfe()
 ```
 
