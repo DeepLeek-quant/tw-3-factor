@@ -2,6 +2,8 @@
 
 本研究基於葉怡成教授提出的台股三因子量化交易策略，透過多個面向的優化，大幅提升策略績效。
 
+[本文回測期間皆為 2005/01/01 ~ 2025/03/03。]
+
 ## 基礎策略
 
 基礎策略使用三個基本的因子：
@@ -9,7 +11,7 @@
 2. 價值因子 - 股價淨值比
 3. 動能因子 - 過去3個月漲幅
 
-原始策略採用季度再平衡，回測期間為 2005/01/01 ~ 2025/03/03，基礎實作如下：
+原始策略採用季度再平衡，基礎實作如下：
 
 ```python
 from quantdev.backtest import *
@@ -23,7 +25,7 @@ classic_tw3factor = backtesting(
     rebalance='Q' # 每一季底再平衡 (使用最近一期的財報資料)
 )
 ```
-<img src="figure/summary_classic.png" width="200"/>
+<img src="figure/summary_classic.png" height="200"/>
 
 ```python
 classic_tw3factor._plot_equity_curve()
@@ -34,7 +36,7 @@ classic_tw3factor._plot_equity_curve()
 
 經典的三因子策略已經可以取得優異的報酬，但仍然可以針對個別因子與參數進行更細緻的調整。
 
-## 因子優化過程
+## 因子優化
 
 ### 獲利因子
 
@@ -44,6 +46,8 @@ classic_tw3factor._plot_equity_curve()
 - ROE_Q（季增率）
 
 ```python
+from quantdev.analysis import *
+
 profit_factors = {
     'ROE': get_factor('常續ROE'),
     'ROE_Y': get_data('常續ROE_yoy_diff'),
@@ -60,7 +64,7 @@ for k, v in profit_factors.items():
 display(profit_quantiles)
 ```
 
-<img src="figure/quantiles_profit.png" width="200"/>
+<img src="figure/quantiles_profit.png" height="300"/>
 
 由分析結果可見，ROE_Y 無論是前10百分位組或多空組合的的報酬率皆是最高，而 ROE_Q 的報酬率則更遜於 ROE，推測這是由於傳統台股具有淡旺季起伏，因此 QoQ 較無法體現 ROE 的變化，因此我們選擇 ROE_Y 作為新的獲利因子。
 
@@ -74,8 +78,6 @@ display(profit_quantiles)
 - 市值營收比 = 市值 / 營收
 
 ```python
-from quantdev.analysis import *
-
 value_factors = {
     'PER':get_factor('本益比', asc=False),
     'PBR':get_factor('股價淨值比',asc=False),
@@ -92,7 +94,7 @@ for k, v in value_factors.items():
         ], axis=1)
 display(value_quantiles)
 ```
-<img src="figure/quantiles_value.png" width="250"/>
+<img src="figure/quantiles_value.png" height="300"/>
 
 雖然PBR的表現最佳，但考慮前面提到的固有缺陷，我們選擇表現次佳且更穩健的市值營收比作為新的價值因子。
 
@@ -125,7 +127,7 @@ mtm_quantiles = pd.concat([
     ], axis=1)
 display(mtm_quantiles)
 ```
-<img src="figure/quantiles_mtm.png" width="150"/>
+<img src="figure/quantiles_mtm.png" height="300"/>
 
 由回測結果可見，FIP 的報酬率較 MTM 更高，且波動較小，因此我們選擇 FIP 作為新的動能因子。
 
@@ -147,7 +149,7 @@ improved_tw3factor = backtesting(
 )
 ```
 
-<img src="figure/summary_improved.png" width="200"/>
+<img src="figure/summary_improved.png" height="200"/>
 
 由圖可見，改進後的策略在年化報酬率、MDD、波動度上都有所提升，然而，在選股池、再平衡時機上我們仍可以做得更多。
 - 在選股池上，根據 Gary Antonacci 的 <雙動能投資：高報酬低風險策略>，我們可以根據絕對動能 (個股自身過去的漲幅) 的概念，只投資在均線之上的股票。
@@ -162,7 +164,7 @@ improved_tw3factor2 = backtesting(
    rebalance='MR', # 每月月營收公布時再平衡
 )
 ```
-<img src="figure/summary_improved2.png" width="200"/>
+<img src="figure/summary_improved2.png" height="200"/>
 
 ```python
 improved_tw3factor2._plot_equity_curve()
@@ -186,4 +188,4 @@ improved_tw3factor2._plot_equity_curve()
 2. 改良策略使用ROE年增率/市值營收比/FIP因子，將年化報酬提升至37.79%，最大回撤降至47.40%
 3. 最終策略限制只投資在20日均線之上的股票，並提高再平衡頻率至每月，成功將年化報酬提升至42.87%，最大回撤降至34.05%，同時Beta也降至0.38，顯示策略的穩健性提高
 
-整體而言，最終版本的策略在風險與報酬上都有明顯改善。
+整體而言，最終版本的策略在風險與報酬上都有明顯改善，但過去績效不代表未來，投資人仍應謹慎評估風險。
