@@ -16,13 +16,14 @@
 ```python
 from quantdev.backtest import *
 
-ROE = get_factor('常續ROE')
-MTM = get_factor('mtm_3m')
-PBR = get_factor('股價淨值比', asc=False)
-
+ROE = (data['常續ROE']).to_factor()
+MTM = (data['收盤價']*data['調整係數']).pct_change(60).to_factor()
+PBR = (-1*data['股價淨值比']).to_factor()
 classic_tw3factor = backtesting(
-    get_factor(ROE+PBR+MTM)>=0.99, # 等權配置
-    rebalance='Q' # 每一季底再平衡 (使用最近一期的財報資料)
+    (ROE+PBR+MTM).to_rank()>=0.99, # 等權三因子, 並選前 1% 投資
+    rebalance='QR', # 每一季底再平衡 (使用最近一期的財報資料)
+    start='2008',
+    report=True,
 )
 ```
 <img src="figure/summary_classic.png" height="200"/>
