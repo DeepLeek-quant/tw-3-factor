@@ -41,8 +41,8 @@ classic_tw3factor.tabs
 
 我們提出假設：ROE的變化率可能比其絕對值更具預測性。為驗證這點，我們比較了三種獲利指標：
 - ROE（原始值）
-- ROE_Y（年增率）
 - ROE_Q（季增率）
+- ROE_Y（年增率）
 
 ```python
 from quantdev.analysis import *
@@ -75,14 +75,14 @@ display(profit_quantiles)
 
 - 本益比 = 股價 / 每股盈餘
 - 股價淨值比 = 股價 / 每股淨值
-- 股價營收比 = 股價 / 每股營收
+- 股價現金流比 = 市值 / 營運產生現金流量
 - 市值營收比 = 市值 / 營收
 
 ```python
 value_factors = {
     'PER':(data['本益比']*-1),
     'PBR':(data['股價淨值比']*-1),
-    'PCR':(data['收盤價']/data['營運產生現金流量']*-1),
+    'PCR':(data['個股市值(元)']/data['營運產生現金流量']*-1),
     'MCAP_TO_REV':(data['個股市值(元)']/data['營業收入']*-1),
 }
 
