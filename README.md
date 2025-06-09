@@ -26,7 +26,7 @@ classic_tw3factor = backtesting(
     report=True,
 )
 ```
-<img src="figure/summary_classic.png" height="200"/>
+<img src="figure/summary_classic.png" height="300"/>
 
 ```python
 classic_tw3factor._plot_equity_curve()
