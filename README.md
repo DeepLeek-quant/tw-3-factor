@@ -2,7 +2,12 @@
 
 本研究基於葉怡成教授於【台股研究室】提出的台股三因子量化交易策略，透過多個面向的優化，大幅提升策略績效。
 
-[本文回測期間皆為 2005/01/01 ~ 2025/03/03]
+[回測假設]
+1. 回測期間: 2008/01/01 ~ 2025/03/03
+2. 交易成本: 含税、手續費以三折計算、滑價以 1‰ 計
+3. 比較基準: 加權指數含息報酬 
+4. 再平衡時間點: 法定財報公布截止日的下一個交易日
+
 
 ## 基礎策略
 
@@ -155,7 +160,7 @@ tw3f_report2 = backtesting(
 )
 ```
 
-<img src="figure/M_improved.png" height="200"/>
+<img src="figure/M_improved.png" height="300"/>
 
 由圖可見，改進後的策略在年化報酬率、MDD、波動度上都有所提升，然而，在選股池上，我們仍可以參考《雙動能投資：高報酬低風險策略》，基於絕對動能 (個股自身過去的漲幅) 的概念，只投資在均線之上的股票。
 
@@ -169,7 +174,7 @@ tw3f_report3 = backtesting(
    report=True, 
 )
 ```
-<img src="figure/M_improved2.png" height="200"/>
+<img src="figure/M_improved2.png" height="300"/>
 
 ```python
 improved_tw3factor2.tabs
